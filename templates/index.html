@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Review AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-black text-white h-screen flex flex-col items-center justify-center">
+
+    <h1 class="text-5xl font-extrabold mb-8 text-blue-500 animate-bounce">🔥 Resume Review AI</h1>
+
+    <form action="/upload" method="post" enctype="multipart/form-data" class="p-6 border-2 border-blue-600 rounded-lg shadow-lg w-96 text-center bg-gray-800">
+        <label class="block mb-4 text-lg font-semibold text-blue-400">Upload Your Resume (PDF)</label>
+        <input type="file" name="resume" accept=".pdf" required class="bg-blue-600 p-2 rounded mb-6 w-full text-center text-white cursor-pointer hover:bg-blue-700 transition duration-300">
+
+        <button type="submit" class="bg-blue-600 p-3 w-full rounded-lg hover:bg-blue-700 text-lg font-semibold transition duration-300">Upload</button>
+    </form>
+
+    <div class="mt-8 p-6 border-2 border-blue-600 rounded-lg shadow-lg w-96 text-center bg-gray-800 hidden" id="output">
+        <h2 class="text-xl font-bold text-blue-400 mb-4">📄 Analysis Report</h2>
+        <div id="keywords" class="text-green-400 mb-4"></div>
+        <div id="grammar" class="text-yellow-400 mb-4"></div>
+        <div id="score" class="text-red-400 text-lg font-semibold"></div>
+    </div>
+
+    <script>
+        document.querySelector("form").onsubmit = async function (e) {
+            e.preventDefault();
+            let formData = new FormData(e.target);
+            let response = await fetch("/upload", { method: "POST", body: formData });
+            let result = await response.text();
+
+            let outputDiv = document.getElementById("output");
+            outputDiv.innerHTML = result;
+            outputDiv.classList.remove("hidden");
+        }
+    </script>
+
+</body>
+</html>
